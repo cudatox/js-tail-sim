@@ -10,7 +10,7 @@
 
 #sim_controls{
     overflow-y: scroll;
-    height: 100vh;
+    max-height: 100vh;
     padding-right: 15px;
     max-width: 300px;
 }

@@ -1,184 +1,168 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>Tail Simulator</title>
-        <script src="static/tailsim.js" type="Text/Javascript"></script>
-        <script src="static/controls.js" type="Text/Javascript"></script>
-        <link rel="stylesheet" href="static/skeleton/css/skeleton.css">
-        <link rel="stylesheet" href="static/main.css">
-    </head>
-    <body>
-        <div class="row">
 
-            <!--- Begin sim controls-->
-            <div id="sim_controls" class="four columns">
-                <div class="row">
-                    <div class="twelve columns">
-                        <div class="menu-heading">Mechanical configuration</div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="twelve columns">
-                        <label for="tail_length">Tail Length (cm)</label>
-                        <input type="number" id="tail_length" value="100" max="2000" min="10" class="u-full-width"></input>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="twelve columns">
-                        <label for="link_count">Link Count</label>
-                        <input type="number" id="link_count" value="7" max="20" min="3" class="u-full-width"></input>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="six columns">
-                        <label for="link_mass">Link Mass (g)</label>
-                        <input type="number" id="link_mass" value="100" max="2000" min="10" class="u-full-width"></input>
-                    </div>
-                    <div class="six columns">
-                        <label for="link_width">Link Width (mm)</label>
-                        <input type="number" id="link_width" value="65" max="200" min="10" class="u-full-width"></input>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="twelve columns">
-                        <button class="u-full-width button-primary" id="update_simulation">Rebuild</button>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="twelve columns">
-                        <div class="menu-heading">Forcing Function</div>
-                    </div>
-                </div>
+<head>
+    <meta charset="utf-8">
+    <title>Tail Simulator</title>
+    <script src="static/tailsim.js" type="Text/Javascript"></script>
+    <script src="static/controls.js" type="Text/Javascript"></script>
+    <link rel="stylesheet" href="static/skeleton/css/skeleton.css">
+    <link rel="stylesheet" href="static/main.css">
+</head>
 
-                <!--Begin forcing function options-->
+<body>
+    <div class="container">
+        <!--- Begin sim controls-->
+        <div id="sim_controls" class="four columns">
+            <div class="row">
+                <div class="twelve columns">
+                    <div class="menu-heading">Mechanical configuration</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="twelve columns">
+                    <label for="tail_length">Tail Length (cm)</label>
+                    <input type="number" id="tail_length" value="100" max="2000" min="10" class="u-full-width"></input>
+                </div>
+            </div>
+            <div class="row">
+                <div class="twelve columns">
+                    <label for="link_count">Link Count</label>
+                    <input type="number" id="link_count" value="7" max="20" min="3" class="u-full-width"></input>
+                </div>
+            </div>
+            <div class="row">
+                <div class="six columns">
+                    <label for="link_mass">Link Mass (g)</label>
+                    <input type="number" id="link_mass" value="100" max="2000" min="10" class="u-full-width"></input>
+                </div>
+                <div class="six columns">
+                    <label for="link_width">Link Width (mm)</label>
+                    <input type="number" id="link_width" value="65" max="200" min="10" class="u-full-width"></input>
+                </div>
+            </div>
+            <div class="row">
+                <div class="twelve columns">
+                    <button class="u-full-width button-primary" id="update_simulation">Rebuild</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="twelve columns">
+                    <div class="menu-heading">Forcing Function</div>
+                </div>
+            </div>
+            <!--Begin forcing function options-->
+            <div class="row">
+                <div class="twelve columns">
+                    <label for="forcingFunctionInput">Forcing function</label>
+                    <select class="u-full-width" id="forcingFunctionInput">
+                        <option value="controls_static">Static</option>
+                        <option value="controls_tension_sweep">Tension sweep</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="controls_static" class="ff_hideable">
                 <div class="row">
                     <div class="twelve columns">
-                        <label for="forcingFunctionInput">Forcing function</label>
-                        <select class="u-full-width" id="forcingFunctionInput">
-                          <option value="controls_static">Static</option>
-                          <option value="controls_tension_sweep">Tension sweep</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div id="controls_static" class="ff_hideable">
-                    <div class="row">
-                        <div class="twelve columns">
-                            <label for="staticTension">Static Tension (N)</label>
-                            <input type="number" id="staticTension" value="1.0" min="0" step="0.1" class="u-full-width"></input>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="controls_tension_sweep" class="ff_hideable">
-                    <div class="row">
-                        <div class="twelve columns">
-                            <label for="tensionSweepAmplitude">Amplitude (N)</label>
-                            <input type="number" id="tensionSweepAmplitude" value="1.0" min="0" step="0.1" class="u-full-width"></input>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="twelve columns">
-                            <label for="tensionSweepFrequency">Frequency (Hz)</label>
-                            <input type="number" id="tensionSweepFrequency" value="0.5" min="0" step="0.1" class="u-full-width"></input>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="servo_physical_controls" hidden>
-                    <div class="row">
-                        <div class="twelve columns">
-                            <label for="servoSpeed">Servo Speed (deg/s)</label>
-                            <input type="number" id="servoSpeed" value="30" max="180" min="0" class="u-full-width"></input>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="twelve columns">
-                            <label for="servoMaxAngle">Maximum Servo Angle</label>
-                            <input type="number" id="servoMaxAngle" value="180" max="180" min="0" class="u-full-width"></input>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="twelve columns">
-                            <label for="servoPulleyRadius">Actuator Pulley Radius (mm)</label>
-                            <input type="number" id="servoPulleyRadius" value="180" max="180" min="0" class="u-full-width"></input>
-                        </div>
-                    </div>
-                </div>
-
-                <!--Begin advanced options-->
-                <div class="row">
-                    <div class="twelve columns">
-                        <div class="menu-heading">Advanced Options</div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="twelve columns">
-                        <label for="angleConstraint">Angle Constraint (deg)</label>
-                        <input type="number" id="angleConstraint" value="45" max="180" min="0" class="u-full-width"></input>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="twelve columns">
-                        <label for="velocityDamping">Velocity Damping</label>
-                        <input type="number" id="velocityDamping" value="0.2" max="1.0" min="0" step="0.01" class="u-full-width"></input>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="twelve columns">
-                        <label for="velSquaredDamping">Velocity<sup>2</sup> Damping</label>
-                        <input type="number" id="velSquaredDamping" value="0" max="1.0" min="0" step="0.01" class="u-full-width"></input>
+                        <label for="staticTension">Static Tension (N)</label>
+                        <input type="number" id="staticTension" value="1.0" min="0" step="0.1"
+                            class="u-full-width"></input>
                     </div>
                 </div>
             </div>
 
-
-
-            <!-- Begin sim canvas container-->
-            <div id="sim_main" class="eight columns">
-
+            <div id="controls_tension_sweep" class="ff_hideable">
                 <div class="row">
                     <div class="twelve columns">
-                        <canvas id="sim_canvas" width="1000px" height="1000px" class="u-max-full-width"></canvas>
+                        <label for="tensionSweepAmplitude">Amplitude (N)</label>
+                        <input type="number" id="tensionSweepAmplitude" value="1.0" min="0" step="0.1"
+                            class="u-full-width"></input>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="twelve columns">
+                        <label for="tensionSweepFrequency">Frequency (Hz)</label>
+                        <input type="number" id="tensionSweepFrequency" value="0.5" min="0" step="0.1"
+                            class="u-full-width"></input>
+                    </div>
+                </div>
+            </div>
 
+            <!--Begin advanced options-->
+            <div class="row">
+                <div class="twelve columns">
+                    <div class="menu-heading">Advanced Options</div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="twelve columns">
+                    <label for="angleConstraint">Angle Constraint (deg)</label>
+                    <input type="number" id="angleConstraint" value="45" max="180" min="0" class="u-full-width"></input>
+                </div>
+            </div>
+            <div class="row">
+                <div class="twelve columns">
+                    <label for="velocityDamping">Velocity Damping</label>
+                    <input type="number" id="velocityDamping" value="0.2" max="1.0" min="0" step="0.01"
+                        class="u-full-width"></input>
+                </div>
+            </div>
+            <div class="row">
+                <div class="twelve columns">
+                    <label for="velSquaredDamping">Velocity<sup>2</sup> Damping</label>
+                    <input type="number" id="velSquaredDamping" value="0" max="1.0" min="0" step="0.01"
+                        class="u-full-width"></input>
+                </div>
             </div>
         </div>
 
-        <!-- Stats table -->
-        <div class="container">
+
+
+        <!-- Begin sim canvas container-->
+        <div id="sim_main" class="eight columns">
+
             <div class="row">
-                <table class="u-full-width">
-                    <thead>
-                        <tr>
-                            <th>Variable</th>
-                            <th>Description</th>
-                            <th style="min-width: 6em;">Current</th>
-                            <th style="min-width: 6em;">Maximum</th>
-                        </tr>
-                        <tr>
-                            <td>Cable displacment</td>
-                            <td>How much the control cable has been extended or retracted</td>
-                            <td id="cableDisplacement">-</td>
-                            <td id="cableDisplacementMax">-</td>
-                        </tr>
-                        <tr>
-                            <td>Horizontal displacement</td>
-                            <td>How far the tip of the tail has moved left or right of center</td>
-                            <td id="horizontalDisplacement">-</td>
-                            <td id="horizontalDisplacementMax">-</td>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-            <div class="row">
-                <button class="u-pull-right" id="resetStats">Reset Stats</button>
+                <div class="twelve columns">
+                    <canvas id="sim_canvas" width="1000px" height="1000px" class="u-max-full-width"></canvas>
+                </div>
             </div>
 
+            <div class="row">
+                <!-- Stats table -->
+                <div class="u-full-width">
+                    <div class="row">
+                        <table class="u-full-width">
+                            <thead>
+                                <tr>
+                                    <th>Variable</th>
+                                    <th>Description</th>
+                                    <th style="min-width: 6em;">Current</th>
+                                    <th style="min-width: 6em;">Maximum</th>
+                                </tr>
+                                <tr>
+                                    <td>Cable displacment</td>
+                                    <td>How much the control cable has been extended or retracted</td>
+                                    <td id="cableDisplacement">-</td>
+                                    <td id="cableDisplacementMax">-</td>
+                                </tr>
+                                <tr>
+                                    <td>Horizontal displacement</td>
+                                    <td>How far the tip of the tail has moved left or right of center</td>
+                                    <td id="horizontalDisplacement">-</td>
+                                    <td id="horizontalDisplacementMax">-</td>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <button class="u-pull-right" id="resetStats">Reset Stats</button>
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
 
-    </body>
+</body>
 </html>
