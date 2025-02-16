@@ -7,3 +7,10 @@
     margin-bottom: 1.5rem;
     margin-top: 1rem;
 }
+
+#sim_controls{
+    overflow-y: scroll;
+    height: 100vh;
+    padding-right: 15px;
+    max-width: 300px;
+}

@@ -82,6 +82,25 @@ tailSimControls.installAdvancedOptionEvents = function(){
     });
 }
 
+tailSimControls.installStatsResetEvent = function(){
+    document.getElementById("resetStats").addEventListener("click", (evt) => {
+        TailSim.resetStats();
+    });
+}
+
+tailSimControls.formatStatsNumber = function(num){
+    return String((Math.round(num * 10)/10).toFixed(1))
+}
+
+tailSimControls.updateStats = function(){
+    TailSim.updateStats();
+    stats = TailSim.statistics;
+    document.getElementById("cableDisplacement").textContent = tailSimControls.formatStatsNumber(stats.cableDisplacement * 1000) + "mm";
+    document.getElementById("cableDisplacementMax").textContent = tailSimControls.formatStatsNumber(stats.cableDisplacementMax * 1000) + "mm";
+    document.getElementById("horizontalDisplacement").textContent = tailSimControls.formatStatsNumber(stats.horizontalDisplacement * 1000) + "mm";
+    document.getElementById("horizontalDisplacementMax").textContent = tailSimControls.formatStatsNumber(stats.horizontalDisplacementMax * 1000) + "mm";
+}
+
 window.addEventListener("load", (el, ev) => {
     //Handle reset button
     document.getElementById("update_simulation").addEventListener("click", () => {tailSimControls.handleRebuildBtn()});
@@ -91,5 +110,9 @@ window.addEventListener("load", (el, ev) => {
     tailSimControls.handleForcingFunctionChange();
     //Handle advanced options
     tailSimControls.installAdvancedOptionEvents();
+    //Handle reset stats button
+    tailSimControls.installStatsResetEvent();
+    //Statistics panel
+    window.setInterval(tailSimControls.updateStats, 100);
     console.log("loaded.")
 });

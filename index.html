@@ -12,7 +12,7 @@
         <div class="row">
 
             <!--- Begin sim controls-->
-            <div id="sim_controls" class="three columns">
+            <div id="sim_controls" class="four columns">
                 <div class="row">
                     <div class="twelve columns">
                         <div class="menu-heading">Mechanical configuration</div>
@@ -137,13 +137,48 @@
 
 
             <!-- Begin sim canvas container-->
-            <div id="sim_main" class="nine columns">
+            <div id="sim_main" class="eight columns">
+
                 <div class="row">
                     <div class="twelve columns">
                         <canvas id="sim_canvas" width="1000px" height="1000px" class="u-max-full-width"></canvas>
                     </div>
                 </div>
+
             </div>
         </div>
+
+        <!-- Stats table -->
+        <div class="container">
+            <div class="row">
+                <table class="u-full-width">
+                    <thead>
+                        <tr>
+                            <th>Variable</th>
+                            <th>Description</th>
+                            <th style="min-width: 6em;">Current</th>
+                            <th style="min-width: 6em;">Maximum</th>
+                        </tr>
+                        <tr>
+                            <td>Cable displacment</td>
+                            <td>How much the control cable has been extended or retracted</td>
+                            <td id="cableDisplacement">-</td>
+                            <td id="cableDisplacementMax">-</td>
+                        </tr>
+                        <tr>
+                            <td>Horizontal displacement</td>
+                            <td>How far the tip of the tail has moved left or right of center</td>
+                            <td id="horizontalDisplacement">-</td>
+                            <td id="horizontalDisplacementMax">-</td>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="row">
+                <button class="u-pull-right" id="resetStats">Reset Stats</button>
+            </div>
+
+        </div>
+
     </body>
 </html>

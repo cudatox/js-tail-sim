@@ -14,17 +14,33 @@ TailSim.simTime = 0.0;
 TailSim.forcingFunctionStrat = ()=>{};
 
 TailSim.statistics = {
-    "maxActuationDistance" : 0.0,
-    "minActuationDistance" : 0.0,
+    "cableDisplacement" : 0.0,
+    "cableDisplacementMax" : 0.0,
+    "horizontalDisplacement" : 0.0,
+    "horizontalDisplacementMax" : 0.0
 };
 
+TailSim.resetStats = function() {
+    console.log("reset")
+    TailSim.statistics = {
+        "cableDisplacement" : 0.0,
+        "cableDisplacementMax" : 0.0,
+        "horizontalDisplacement" : 0.0,
+        "horizontalDisplacementMax" : 0.0
+    };
+}
+
 TailSim.updateStats = function(){
-    const actuationDistance = this.getRestingBowdenLength() - this.getBowdenLength();
-    if (actuationDistance > this.statistics.maxActuationDistance){
-        this.statistics.maxActuationDistance = actuationDistance
+    const cableDisplacement = Math.abs(this.getRestingBowdenLength() - this.getBowdenLength());
+    if (cableDisplacement > this.statistics.cableDisplacementMax){
+        this.statistics.cableDisplacementMax = cableDisplacement;
     }
-    if (actuationDistance < this.statistics.minActuationDistance){
-        this.statistics.minActuationDistance = actuationDistance
+    this.statistics.cableDisplacement = cableDisplacement;
+
+    const lastLink = this.linkArray[this.linkArray.length-1];
+    this.statistics.horizontalDisplacement = Math.abs(lastLink.position[0]);
+    if (this.statistics.horizontalDisplacement > this.statistics.horizontalDisplacementMax){
+        this.statistics.horizontalDisplacementMax = this.statistics.horizontalDisplacement;
     }
 }
 
@@ -520,6 +536,8 @@ TailSim.constantRateSpringStrat = function(springForce, maxRetraction){
 }
 
 function animate(){
+    //The simulation happens at 120Hz
+    //Animate is called at a fixed 60Hz
     for (var i =0; i < 2; i++){
         TailSim.stepSimulation(1.0/120);
         TailSim.simTime += 1000.0/120;
